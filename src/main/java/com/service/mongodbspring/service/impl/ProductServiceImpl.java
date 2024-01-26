@@ -1,9 +1,6 @@
 package com.service.mongodbspring.service.impl;
 
 import com.service.mongodbspring.dto.ProductRequest;
-import com.service.mongodbspring.dto.ProductResponse;
-import com.service.mongodbspring.mapper.BasicMapper;
-import com.service.mongodbspring.model.Image;
 import com.service.mongodbspring.model.Product;
 import com.service.mongodbspring.repository.ProductRepository;
 import com.service.mongodbspring.service.ProductService;
@@ -15,16 +12,18 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final BasicMapper basicMapper;
 
     @Override
-    public ProductResponse addProduct(ProductRequest request) {
-        Product product = basicMapper.convertTo(request, Product.class);
-        return basicMapper.convertTo(addProductToDb(product), ProductResponse.class);
+    public Product addProduct(ProductRequest request) {
+        Product product = addProductToDb(request);
+        return productRepository.insert(product);
     }
 
-    private Product addProductToDb(Product product) {
-//        product.setImage(new Image().setImageLocation("loca"););
-        return productRepository.insert(product);
+    private Product addProductToDb(ProductRequest request) {
+        return new Product(request.getName(),
+                request.getPrice(),
+                request.getQuantity(),
+                request.getDescription()
+        );
     }
 }

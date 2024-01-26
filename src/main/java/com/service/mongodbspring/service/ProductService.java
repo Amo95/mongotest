@@ -2,7 +2,8 @@ package com.service.mongodbspring.service;
 
 import com.service.mongodbspring.dto.ProductRequest;
 import com.service.mongodbspring.dto.ProductResponse;
+import com.service.mongodbspring.model.Product;
 
 public interface ProductService {
-    ProductResponse addProduct(ProductRequest request);
+    Product addProduct(ProductRequest request);
 }

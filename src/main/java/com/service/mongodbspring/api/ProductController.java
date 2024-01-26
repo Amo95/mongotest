@@ -2,6 +2,7 @@ package com.service.mongodbspring.api;
 
 import com.service.mongodbspring.dto.ProductRequest;
 import com.service.mongodbspring.dto.ProductResponse;
+import com.service.mongodbspring.model.Product;
 import com.service.mongodbspring.service.impl.ProductServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,7 +28,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "page not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest request){
+    public ResponseEntity<Product> addProduct(@RequestBody ProductRequest request){
         return ResponseEntity.ok(productService.addProduct(request));
     }
 }
