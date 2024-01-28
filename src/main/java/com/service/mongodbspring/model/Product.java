@@ -1,5 +1,6 @@
 package com.service.mongodbspring.model;
 
+import com.service.mongodbspring.enums.Colors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -17,11 +18,13 @@ public class Product {
     private Double price;
     private int quantity;
     private String description;
+    private Colors color;
 
-    public Product(String name, Double price, int quantity, String description) {
+    public Product(String name, Double price, int quantity, String description, Colors color) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.description = description;
+        this.color = color;
     }
 }

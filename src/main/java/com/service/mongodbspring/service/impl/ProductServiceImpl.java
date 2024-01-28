@@ -16,6 +16,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -30,9 +32,10 @@ public class ProductServiceImpl implements ProductService {
 
         Query query = new Query().addCriteria(Criteria.where("name").is(request.getName()));
         Update updateDefinition = new Update().set("name", request.getName())
-                        .set("price", request.getPrice())
+                .set("price", request.getPrice())
                         .set("quantity", request.getQuantity())
-                        .set("description", request.getDescription());
+                        .set("description", request.getDescription())
+                .set("color", request.getColor());
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 
         return mapper.convertTo(template
@@ -40,23 +43,28 @@ public class ProductServiceImpl implements ProductService {
                 ProductResponse.class);
     }
 
+    @Override
+    public List<ProductResponse> getAllProducts() {
+        return mapper.convertListTo(productRepository.findAll(), ProductResponse.class);
+    }
+
+    @Override
+    public ProductResponse getProduct(String name) {
+        return mapper.convertTo(productRepository.findProductByName(name), ProductResponse.class);
+    }
+
+    @Override
+    public void RemoveProduct(String name) {
+        productRepository.deleteByName(name);
+    }
+
     private Product addProductToDb(ProductRequest request) {
         return new Product(
                 request.getName(),
                 request.getPrice(),
                 request.getQuantity(),
-                request.getDescription()
+                request.getDescription(),
+                request.getColor()
         );
-    }
-
-    private Product updateProduct(ProductRequest request){
-        return null;
-    }
-
-    private void implMongoTemplateAndQuery(ProductRepository productRepository,
-                                           MongoTemplate template,
-                                           String name,
-                                           Product product){
-
     }
 }

@@ -1,6 +1,6 @@
 package com.service.mongodbspring.dto;
 
-import com.service.mongodbspring.model.Image;
+import com.service.mongodbspring.enums.Colors;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,4 +11,5 @@ public class ProductRequest {
     private Double price;
     private int quantity;
     private String description;
+    private Colors color;
 }

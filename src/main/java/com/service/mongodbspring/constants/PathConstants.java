@@ -1,7 +1,9 @@
 package com.service.mongodbspring.constants;
 
-import java.nio.file.Path;
-
 public class PathConstants {
-//    public static final String LOCALHOST =
+    public static final String COLOR_RED = "Red";
+    public static final String COLOR_BLUE = "Blue";
+    public static final String COLOR_PINK = "Pink";
+    public static final String COLOR_BLACK = "Black";
+    public static final String COLOR_WHITE = "White";
 }
