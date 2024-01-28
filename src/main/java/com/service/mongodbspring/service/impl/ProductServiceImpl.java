@@ -1,17 +1,17 @@
 package com.service.mongodbspring.service.impl;
 
-import com.mongodb.client.result.UpdateResult;
 import com.service.mongodbspring.dto.ProductRequest;
+import com.service.mongodbspring.mapper.BasicMapper;
 import com.service.mongodbspring.model.Product;
 import com.service.mongodbspring.repository.ProductRepository;
 import com.service.mongodbspring.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,26 +19,40 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final MongoTemplate template;
+    private final BasicMapper mapper;
+    private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Override
-    public Product addProduct(ProductRequest request) {
+    public Optional<Product> addProduct(ProductRequest request) {
 
-        Query query = new Query();
+        Product product = mapper.convertTo(request, Product.class);
+        productRepository.findProductByName(request.getName())
+                .ifPresentOrElse(name -> {
+                    LOGGER.error(String.format("%s already exists", name));
+                }, () -> {
+                    productRepository.insert(product);
+                });
 
-        query.addCriteria(Criteria.where("name").is(request.getName()));
-        List<Product> productList = template.find(query, Product.class);
-
-        if(productList.size() > 1){
-
-        }
-        return productRepository.insert(product);
+        return productRepository.findProductByName(request.getName());
     }
 
-    private Product addProductToDb(ProductRequest request, Query query) {
-        return template.upsert(query, )
+    private Product addProductToDb(ProductRequest request) {
+        return new Product(
+                request.getName(),
+                request.getPrice(),
+                request.getQuantity(),
+                request.getDescription()
+        );
     }
 
     private Product updateProduct(ProductRequest request){
-        UpdateResult updateResult =
+        return null;
+    }
+
+    private void implMongoTemplateAndQuery(ProductRepository productRepository,
+                                           MongoTemplate template,
+                                           String name,
+                                           Product product){
+
     }
 }

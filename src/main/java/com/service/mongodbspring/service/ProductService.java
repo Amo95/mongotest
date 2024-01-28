@@ -4,6 +4,8 @@ import com.service.mongodbspring.dto.ProductRequest;
 import com.service.mongodbspring.dto.ProductResponse;
 import com.service.mongodbspring.model.Product;
 
+import java.util.Optional;
+
 public interface ProductService {
-    Product addProduct(ProductRequest request);
+    Optional<Product> addProduct(ProductRequest request);
 }
