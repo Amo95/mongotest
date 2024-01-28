@@ -30,7 +30,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "page not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<Optional<Product>> addProduct(@RequestBody ProductRequest request){
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest request){
         return ResponseEntity.ok(productService.addProduct(request));
     }
 }
